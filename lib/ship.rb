@@ -10,57 +10,6 @@ class Ship
     @location << coordinate
   end
 
-  def make_two_unit_ship(coordinate_1, coordinate_2)
-    if two_unit_ship_valid_coordinates?(coordinate_1, coordinate_2)
-      two_unit_ship = Ship.new
-      two_unit_ship.assign_coordinate(coordinate_1)
-      two_unit_ship.assign_coordinate(coordinate_2)
-    else
-    "Error - coordinates are not contiguous"
-    end
-    return two_unit_ship
-  end
-
-  def make_three_unit_ship(coordinate_1, coordinate_2)
-      if three_unit_ship_valid_coordinates?(coordinate_1, coordinate_2)
-        middle = fill_in_coordinates(coordinate_1,coordinate_2)
-      three_unit_ship = Ship.new
-      three_unit_ship.assign_coordinate(coordinate_1)
-      three_unit_ship.assign_coordinate(middle)
-      three_unit_ship.assign_coordinate(coordinate_2)
-      else
-      "Error - coordinates are not contiguous"
-      end
-      return three_unit_ship
-  end
-
-  def two_unit_ship_valid_coordinates?(coordinate_1, coordinate_2)
-      x = (coordinate_1 - coordinate_2).abs
-      if (x == 1) || (x == 4)
-        return true
-      else false
-      end
-  end
-
-  def three_unit_ship_valid_coordinates?(coordinate_1, coordinate_2)
-      x = (coordinate_1 - coordinate_2).abs
-      if (x == 2) || (x == 8)
-        return true
-      else false
-      end
-  end
-
-  def fill_in_coordinates(coordinate_1, coordinate_2)
-    x = (coordinate_1 - coordinate_2).abs
-      if x == 8
-        coordinate_1 + 4
-      elsif x == 2
-        coordinate_1 + 1
-      else 
-        "Error - not contiguous coordinates"
-      end
-  end
-
   def on_ship?(coordinate)
     if @location.include?(coordinate)
       true
@@ -69,8 +18,25 @@ class Ship
     end
   end
 
+  def ship_first_coordinate
+    @location[0]
+  end
+
+  def ship_last_coordinate
+    @location[-1]
+  end
+
+  def horizontal_or_vertical_position?
+      if in_row?
+        true
+      elsif in_column?
+        true
+      else
+        false
+      end
+  end
+
   def in_row?
-    # require 'pry'; binding.pry
     if in_first_row?
       true
     elsif in_second_row?

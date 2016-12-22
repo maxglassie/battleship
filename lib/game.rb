@@ -9,9 +9,8 @@ class Game
     @computer_board = Board.new
   end
 
-  
-
-
+  def welcome
+    puts Message.welcome
 
   # def ai_ship_generator
   #   #between 0 - 15, generate rand coordinate

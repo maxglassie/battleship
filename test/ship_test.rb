@@ -105,13 +105,25 @@ def test_in_column_returns_true
     coordinate_0 = 8
     coordinate_1 = 9
     coordinate_2 = 10
-    board = Board.new
 
     ship.assign_coordinate(coordinate_0)
     ship.assign_coordinate(coordinate_1)
     ship.assign_coordinate(coordinate_2)
 
     assert_equal false, ship.in_column?
+  end
+
+  def test_ship_first_coordinate
+    ship = Ship.new
+    coordinate_0 = 8
+    coordinate_1 = 9
+    coordinate_2 = 10
+
+    ship.assign_coordinate(coordinate_0)
+    ship.assign_coordinate(coordinate_1)
+    ship.assign_coordinate(coordinate_2)
+
+    ship.first_first_coordinate
   end
 
 end #class end
