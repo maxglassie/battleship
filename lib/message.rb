@@ -1,11 +1,10 @@
-module Messages
+module Message
 
-  def welcome_message
-    puts "Welcome to BATTLESHIP
-    Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
+  def self.welcome_message
+    puts "Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
   end
 
-  def instructions
+  def self.instructions
     puts "Players place their ships on the board. They cannot see their 
     opponents board. \n
     Players alternate taking shots at their opponents board. If it is a hit,
@@ -14,7 +13,7 @@ module Messages
     A ship is sunk when all of the locations of the ship have been hit."
   end
 
-  def computer_has_placed_ships
+  def self.computer_has_placed_ships
       puts "I have laid out my ships on the grid. \n
       You now need to layout your two ships. \n 
       The first is two units long and the \n
@@ -25,21 +24,26 @@ module Messages
       (for example - A1 A2)"
   end
 
-  def player_place_three_unit_ship
+  def self.player_place_three_unit_ship
       puts "Please place a three unit ship. Place them using  \n
       the first and last coordinates. \n
       (for example - A1 A3)"
   end
 
-  def player_shot
+  def self.player_shot
     puts "Please enter a coordinate for your shot:"
   end
 
-  def computer_shot
-    puts "The computer fired at #{coordinate}."
+  def self.shot_hit
+    puts "Hit!"
   end
 
-  def computer_shot_result
+  def self.shot_miss
+    puts "Miss!"
+  end
+
+  def self.computer_shot
+    puts "The computer fired at #{coordinate}."
   end
 
 end
