@@ -2,6 +2,7 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/board'
 
+
 class BoardTest < Minitest::Test
 
   def test_creates_new_board

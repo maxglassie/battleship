@@ -35,12 +35,11 @@ D  #{@array[12]} #{@array[13]} #{@array[14]} #{@array[15]} \n
     end
   end
 
-    def shot_in_ship_list?(shot)
-        @ship_list.any? do |location|
-          shot == location
-          # require 'pry'; binding.pry
-        end
-    end
+  def shot_in_ship_list?(shot)
+      @ship_list.any? do |location|
+        shot == location
+      end
+  end
 
   def validate_shot?(coordinate)
     if on_board?(coordinate)
@@ -51,6 +50,32 @@ D  #{@array[12]} #{@array[13]} #{@array[14]} #{@array[15]} \n
       true
     end
   end
+
+    def add_ship_to_board(ship, board)
+      if ship_horizontal_or_vertical_position?(ship) && !ships_overlap?(ship, board)
+      board.add_ship(ship)
+      else
+        "Error - ship in invalid position or overlap other ship"
+      end
+    end
+
+   def ships_overlap?(ship, board)
+      if board.shot_in_ship_list?(coordinate_1) || board.shot_in_ship_list?(coordinate_2)
+          true
+      else
+          false
+      end
+    end
+
+    def ship_horizontal_or_vertical_position?(ship)
+      if ship.in_row? 
+        true
+      elsif ship.in_column?
+        true
+      else
+        false
+      end
+    end
 
   def add_to_history(coordinate) #skidoosh
     @history << coordinate
@@ -80,34 +105,4 @@ D  #{@array[12]} #{@array[13]} #{@array[14]} #{@array[15]} \n
     end.flatten
   end
 
-
-
-
 end #class end
-
-# board = Board.new
-# ship_1 = Ship.new
-# ship_2 = Ship.new
-# coordinate_1 = 8
-# coordinate_2 = 9
-# coordinate_3 = 3
-# coordinate_4 = 7
-
-# ship_1.assign_coordinate(coordinate_1)
-# ship_1.assign_coordinate(coordinate_2)
-# ship_2.assign_coordinate(coordinate_3)
-# ship_2.assign_coordinate(coordinate_4)
-
-# board.add_ship_to_board(ship_1)
-# board.add_ship_to_board(ship_2)
-
-# shot_1 = 3
-# shot_2 = 7
-# shot_3 = 1
-
-# board.add_to_history(shot_1)
-# board.add_to_history(shot_2)
-# board.add_to_history(shot_3)
-
-# board.writes_board
-# puts board.render
