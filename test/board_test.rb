@@ -2,6 +2,7 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/board'
 
+
 class BoardTest < Minitest::Test
 
   def test_creates_new_board
@@ -63,7 +64,7 @@ class BoardTest < Minitest::Test
        test_board = Board.new
         coordinate_1 = -1
 
-        assert_equal "Error - is not on the game board", test_board.validate_shot?(coordinate_1)
+        assert_equal "Error - is not on the board", test_board.validate_shot?(coordinate_1)
     end
 
     def test_validate_shot_errors_shot_before_coordinates
@@ -227,5 +228,125 @@ class BoardTest < Minitest::Test
      assert board.render
 
    end
+
+def test_two_unit__ship_valid_coordinates_returns_false
+  board = Board.new
+  coordinate_1 = 1
+  coordinate_2 = 3
+
+  assert_equal false, board.two_unit_ship_valid_coordinates?(coordinate_1, coordinate_2)
+end
+
+def test_three_unit_ship_valid_coordinates_returns_true
+  board = Board.new
+  coordinate_1 = 3
+  coordinate_2 = 11
+
+  assert_equal true, board.three_unit_ship_valid_coordinates?(coordinate_1, coordinate_2)
+end
+
+def test_three_unit_ship_valid_coordinates_returns_false
+  board = Board.new
+  coordinate_1 = 3
+  coordinate_2 = 10
+
+  assert_equal false, board.three_unit_ship_valid_coordinates?(coordinate_1, coordinate_2)
+end
+
+def test_fill_in_coordinates_returns_middle
+  board = Board.new
+  coordinate_1 = 7
+  coordinate_2 = 15
+
+  assert_equal 11, board.fill_in_coordinates(coordinate_1, coordinate_2)
+end
+
+def test_fill_in_coordinates_returns_error
+  board = Board.new
+  coordinate_1 = 7
+  coordinate_2 = 11
+
+  assert_equal "Error - not contiguous coordinates", board.fill_in_coordinates(coordinate_1, coordinate_2)
+end
+
+def test_ship_in_horizontal_or_vertical_position?
+  board = Board.new
+  ship = Ship.new
+  coordinate_0 = 6
+  coordinate_1 = 7
+  coordinate_2 = 8
+
+  ship.assign_coordinate(coordinate_0)
+  ship.assign_coordinate(coordinate_1)
+  ship.assign_coordinate(coordinate_2)
+
+  assert_equal false, ship.horizontal_or_vertical_position?
+end
+
+def test_make_two_unit_ship
+    board = Board.new
+    coordinate_1 = 4
+    coordinate_2 = 8
+    ship = Ship.new
+
+    assert_equal ship.class, board.make_two_unit_ship(coordinate_1, coordinate_2).class
+end
+
+def test_make_three_unit_ship
+    board = Board.new
+    coordinate_1 = 4
+    coordinate_2 = 12
+    ship = Ship.new
+
+    assert_equal ship.class, board.make_three_unit_ship(coordinate_1, coordinate_2).class
+end
+
+def test_ships_overlap
+  board = Board.new
+  coordinate_1 = 4
+  coordinate_2 = 12
+
+  coordinate_3 = 8
+  coordinate_4 = 10
+
+  ship_1 = board.make_three_unit_ship(coordinate_1, coordinate_2)
+  ship_2 = board.make_three_unit_ship(coordinate_3, coordinate_4)
+
+  board.add_ship_to_board(ship_1)
+
+  assert_equal true, board.ships_overlap?(ship_2)
+end
+
+def test_ships_overlap_returns_false
+  board = Board.new
+  coordinate_1 = 4
+  coordinate_2 = 12
+
+  coordinate_3 = 3
+  coordinate_4 = 11
+
+  ship_1 = board.make_three_unit_ship(coordinate_1, coordinate_2)
+  ship_2 = board.make_three_unit_ship(coordinate_3, coordinate_4)
+
+  board.add_ship_to_board(ship_1)
+
+  assert_equal false, board.ships_overlap?(ship_2)
+end
+
+def test_add_ship_to_board_errors_on_over_lap
+    board = Board.new
+    coordinate_1 = 4
+    coordinate_2 = 12
+
+    coordinate_3 = 8
+    coordinate_4 = 10
+
+    ship_1 = board.make_three_unit_ship(coordinate_1, coordinate_2)
+    ship_2 = board.make_three_unit_ship(coordinate_3, coordinate_4)
+
+    board.add_ship_to_board(ship_1)
+
+    assert_equal "Error - ship in invalid position or overlaps other ship", board.add_ship_to_board(ship_2)
+end
 
 end #class end

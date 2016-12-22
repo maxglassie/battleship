@@ -1,6 +1,6 @@
-class Translator
+module Translator
 
-  def translator_hash
+  def self.translator_hash
      {
       "A1" => 0,
       "A2" => 1,
@@ -21,10 +21,8 @@ class Translator
     }
   end
 
-  def translate(coordinate)
-    translator_hash[coordinate]
+  def self.translate(coordinate)
+    Translator.translator_hash[coordinate]
   end
-
-  #translate(user_input)
 
 end

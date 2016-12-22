@@ -7,7 +7,6 @@ class Ship
   end
 
   def assign_coordinate(coordinate)
-    #logic for rejecting coordinates if violate horiz / vert
     @location << coordinate
   end
 
@@ -19,9 +18,51 @@ class Ship
     end
   end
 
-  # def create_location(start, end)
+  def ship_first_coordinate
+    @location[0]
+  end
 
-  # end
+  def ship_last_coordinate
+    @location[-1]
+  end
+
+  def horizontal_or_vertical_position?
+      if in_row?
+        true
+      elsif in_column?
+        true
+      else
+        false
+      end
+  end
+
+  def in_row?
+    if in_first_row?
+      true
+    elsif in_second_row?
+      true
+    elsif in_third_row?
+      true
+    elsif in_fourth_row?
+      true
+    else
+      return false
+    end
+  end
+
+  def in_column?
+    if in_first_column?
+      true
+    elsif in_second_column?
+      true
+    elsif in_third_column?
+      true
+    elsif in_fourth_column?
+      true
+    else
+      return false
+    end
+  end
 
   def first_row
     [0,1, 2, 3]
@@ -61,21 +102,6 @@ class Ship
     @location.all? do |coordinate|
       fourth_row.include?(coordinate)
      end
-  end
-
-  def in_row?
-    # require 'pry'; binding.pry
-    if in_first_row?
-      true
-    elsif in_second_row?
-      true
-    elsif in_third_row?
-      true
-    elsif in_fourth_row?
-      true
-    else
-      return false
-    end
   end
 
   def first_column
@@ -118,26 +144,4 @@ class Ship
      end
   end
 
-  def in_column?
-    # require 'pry'; binding.pry
-    if in_first_column?
-      true
-    elsif in_second_column?
-      true
-    elsif in_third_column?
-      true
-    elsif in_fourth_column?
-      true
-    else
-      return false
-    end
-  end
-
-  #Math.sqrt(16)
-  #pass the length arg to a ship 
-  #need to create a ship given two coordinates
-  #predicate for ship type - destroyer, etc - 
-  #what kind of ship are you?
-
- # row could check the difference between the coordinates
 end

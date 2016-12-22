@@ -1,7 +1,7 @@
 require './lib/ship'
 
 class Board 
-  attr_reader :array, :history, :ships
+  attr_reader :array, :history, :ships, :ship_list
 
   def initialize
     @array = [
@@ -35,21 +35,86 @@ D  #{@array[12]} #{@array[13]} #{@array[14]} #{@array[15]} \n
     end
   end
 
-    def shot_in_ship_list?(shot)
-        @ship_list.any? do |location|
-          shot == location
-          # require 'pry'; binding.pry
-        end
-    end
+  def shot_in_ship_list?(shot)
+      @ship_list.any? do |location|
+        shot == location
+      end
+  end
 
   def validate_shot?(coordinate)
     if on_board?(coordinate)
-      "Error - is not on the game board"
+      "Error - is not on the board"
     elsif shot_before?(coordinate)
       "Error - has been fired already"
     else
       true
     end
+  end
+
+  def add_ship_to_board(ship)
+    if ship.horizontal_or_vertical_position? && !ships_overlap?(ship)
+      @ships << ship
+      make_ship_list
+    else
+      "Error - ship in invalid position or overlaps other ship"
+    end
+  end
+
+  def ships_overlap?(ship)
+    ship.location.any? do |coordinate|
+      shot_in_ship_list?(coordinate)
+    end
+  end
+
+  def make_two_unit_ship(coordinate_1, coordinate_2)
+    if two_unit_ship_valid_coordinates?(coordinate_1, coordinate_2)
+      two_unit_ship = Ship.new
+      two_unit_ship.assign_coordinate(coordinate_1)
+      two_unit_ship.assign_coordinate(coordinate_2)
+    else
+    "Error - coordinates are not contiguous"
+    end
+    return two_unit_ship
+  end
+
+  def make_three_unit_ship(coordinate_1, coordinate_2)
+      if three_unit_ship_valid_coordinates?(coordinate_1, coordinate_2)
+        middle = fill_in_coordinates(coordinate_1,coordinate_2)
+      three_unit_ship = Ship.new
+      three_unit_ship.assign_coordinate(coordinate_1)
+      three_unit_ship.assign_coordinate(middle)
+      three_unit_ship.assign_coordinate(coordinate_2)
+      else
+      "Error - coordinates are not contiguous"
+      end
+      return three_unit_ship
+  end
+
+  def two_unit_ship_valid_coordinates?(coordinate_1, coordinate_2)
+      x = (coordinate_1 - coordinate_2).abs
+      if (x == 1) || (x == 4)
+        return true
+      else false
+      end
+  end
+
+  def three_unit_ship_valid_coordinates?(coordinate_1, coordinate_2)
+      x = (coordinate_1 - coordinate_2).abs
+      if (x == 2) || (x == 8)
+        return true
+      else false
+      end
+  end
+
+  def fill_in_coordinates(coordinate_1, coordinate_2)
+    x = (coordinate_1 - coordinate_2).abs
+      if x == 8
+        coordinate_1 + 4
+      elsif x == 2
+        coordinate_1 + 1
+      else 
+        "Error - not contiguous coordinates"
+      end
   end
 
   def add_to_history(coordinate) #skidoosh
@@ -70,44 +135,10 @@ D  #{@array[12]} #{@array[13]} #{@array[14]} #{@array[15]} \n
     end
   end
 
-  def add_ship_to_board(ship)
-    @ships << ship
-  end
-
   def make_ship_list
     @ship_list = @ships.map do |ship|
         ship.location
     end.flatten
   end
 
-
-
-
 end #class end
-
-# board = Board.new
-# ship_1 = Ship.new
-# ship_2 = Ship.new
-# coordinate_1 = 8
-# coordinate_2 = 9
-# coordinate_3 = 3
-# coordinate_4 = 7
-
-# ship_1.assign_coordinate(coordinate_1)
-# ship_1.assign_coordinate(coordinate_2)
-# ship_2.assign_coordinate(coordinate_3)
-# ship_2.assign_coordinate(coordinate_4)
-
-# board.add_ship_to_board(ship_1)
-# board.add_ship_to_board(ship_2)
-
-# shot_1 = 3
-# shot_2 = 7
-# shot_3 = 1
-
-# board.add_to_history(shot_1)
-# board.add_to_history(shot_2)
-# board.add_to_history(shot_3)
-
-# board.writes_board
-# puts board.render
