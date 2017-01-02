@@ -18,6 +18,18 @@ class Ship
     end
   end
 
+  def sink_ship
+    @sunk = true
+  end
+
+  def sunk?
+    if @sunk == true
+      true
+    else 
+      false
+    end
+  end
+
   def ship_first_coordinate
     @location[0]
   end

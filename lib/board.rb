@@ -24,6 +24,43 @@ D  #{@array[12]} #{@array[13]} #{@array[14]} #{@array[15]} \n
 "
   end
 
+# thinking - ship sunk checks the ships on a board 
+# to see if they are sunk
+# should it return a ship? i don't like that
+# what do I want? I want to know if a ship is sunk
+# i also want to set the ship to being sunk, so i can check
+# and see if all the ships on a board are sunk, to end the game
+# 
+# 
+# 
+
+def sank_a_ship?
+  if_ship_sunk_set_ship_to_sunk
+  @ships.any? do |ship|
+      ship.sunk?
+      end
+  end
+
+def if_ship_sunk_set_ship_to_sunk
+    @ships.each do |ship|
+      if ship_sunk?(ship) 
+        ship.sink_ship
+      end
+    end
+  end
+
+  def ship_sunk?(ship)
+      ship.location.all? do |coordinate|
+        ship_coordinates_in_shot_list?(coordinate)
+      end
+  end
+
+  def ship_coordinates_in_shot_list?(shot)
+    @history.any? do |location|
+        shot == location
+      end
+  end
+
   def writes_board
     make_ship_list
     @history.each do |shot|

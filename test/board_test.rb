@@ -349,4 +349,32 @@ def test_add_ship_to_board_errors_on_over_lap
     assert_equal "Error - ship in invalid position or overlaps other ship", board.add_ship_to_board(ship_2)
 end
 
+def test_ship_sunk?
+  board = Board.new
+  ship_1 = Ship.new
+  ship_2 = Ship.new
+  coordinate_1 = 8
+  coordinate_2 = 9
+  coordinate_3 = 3
+  coordinate_4 = 7
+
+  ship_1.assign_coordinate(coordinate_1)
+  ship_1.assign_coordinate(coordinate_2)
+  ship_2.assign_coordinate(coordinate_3)
+  ship_2.assign_coordinate(coordinate_4)
+
+  board.add_ship_to_board(ship_1)
+  board.add_ship_to_board(ship_2)
+
+  shot_1 = 8
+  shot_2 = 9
+  shot_3 = 1
+
+  board.add_to_history(shot_1)
+  board.add_to_history(shot_2)
+  board.add_to_history(shot_3)
+
+  assert_equal true, board.sank_a_ship?
+end
+
 end #class end
